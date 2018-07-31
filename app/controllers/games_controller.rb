@@ -1,37 +1,27 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :update]
+  before_action :set_game, only: [:show]
 
-  # GET /todos
+  # GET /games
   def index
     @games = Game.all
     json_response(@games)
   end
 
-  # POST /todos
+  # POST /games
   def create
-    @word = Word.offset(rand(Word.count)).first
-    @game = Game.create!(guesses: 0, word: @word)
+    word = Word.offset(rand(Word.count)).first
+    @game = Game.create!(word: word)
 
-    json_response(@game, :created)
+    puts 'about to render json'
+
+    render :show, status: :created
   end
 
-  # GET /todos/:id
+  # GET /games/:id
   def show
-    json_response(@game)
-  end
-
-  # PUT /todos/:id
-  def update
-    @game.update(game_params)
-    head :no_content
   end
 
   private
-
-  def game_params
-    # whitelist params
-    params.permit(:guesses)
-  end
 
   def set_game
     @game = Game.find(params[:id])

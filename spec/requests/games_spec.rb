@@ -4,6 +4,7 @@ RSpec.describe 'Games API', type: :request do
   # initialize test data 
   let!(:games) { create_list(:game, 10) }
   let(:game_id) { games.first.id }
+  let!(:words) { create_list(:word, 10) }
 
   # Test suite for GET /games
   describe 'GET /games' do
@@ -23,12 +24,17 @@ RSpec.describe 'Games API', type: :request do
 
   # Test suite for GET /games/:id
   describe 'GET /games/:id' do
-    before { get "/games/#{game_id}" }
+    before { get "/games/#{game_id}", params: { format: 'json' } }
 
     context 'when the record exists' do
       it 'returns the game' do
         expect(json).not_to be_empty
         expect(json['id']).to eq(game_id)
+      end
+
+      it 'does not return a word or word_id' do
+        expect(json['word_id']).to eq(nil)
+        expect(json['word']).to eq(nil)
       end
 
       it 'returns status code 200' do
@@ -49,37 +55,24 @@ RSpec.describe 'Games API', type: :request do
     end
   end
 
-  # Test suite for POST /games
+  # Test suite for POST /games for creating a game
   describe 'POST /games' do
     # valid payload
-    let(:valid_attributes) { { guesses: 0 } }
 
     context 'when the request is valid' do
-      before { post '/games', params: valid_attributes }
+      before { post '/games', params: { format: 'json' } }
 
       it 'creates a game' do
-        expect(json['guesses']).to eq(0)
+        expect(json['id']).not_to eq(nil)
+      end
+
+      it 'does not return a word or word_id' do
+        expect(json['word_id']).to eq(nil)
+        expect(json['word']).to eq(nil)
       end
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
-      end
-    end
-  end
-
-  # Test suite for PUT /games/:id
-  describe 'PUT /games/:id' do
-    let(:valid_attributes) { { guesses: 1 } }
-
-    context 'when the record exists' do
-      before { put "/games/#{game_id}", params: valid_attributes }
-
-      it 'updates the record' do
-        expect(response.body).to be_empty
-      end
-
-      it 'returns status code 204' do
-        expect(response).to have_http_status(204)
       end
     end
   end
