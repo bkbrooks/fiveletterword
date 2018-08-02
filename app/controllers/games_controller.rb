@@ -12,8 +12,6 @@ class GamesController < ApplicationController
     word = Word.offset(rand(Word.count)).first
     @game = Game.create!(word: word)
 
-    puts 'about to render json'
-
     render :show, status: :created
   end
 

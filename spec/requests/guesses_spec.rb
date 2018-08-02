@@ -16,6 +16,10 @@ RSpec.describe 'Guesses API', type: :request do
         expect(Guess.count).to eq(1)
       end
 
+      it 'returns a guess id' do
+        expect(json['id']).not_to eq(nil)
+      end
+
       it 'returns a correct_letter amount' do
         expect(json['correct_letters']).not_to eq(nil)
       end
