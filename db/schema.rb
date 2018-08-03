@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 2018_07_24_215625) do
 
   create_table "words", force: :cascade do |t|
     t.string "word"
+    t.integer "length"
+    t.boolean "unique_letters"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

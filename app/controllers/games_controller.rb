@@ -9,7 +9,7 @@ class GamesController < ApplicationController
 
   # POST /games
   def create
-    word = Word.offset(rand(Word.count)).first
+    word = Word.where(unique_letters: true).sample(1).first
     @game = Game.create!(word: word)
 
     render :show, status: :created

@@ -1,4 +1,5 @@
 json.id @guess.id
 json.text @guess.text
-json.correct_letters @guess.correct_letters
-json.correct_placement @guess.correct_placement
+json.word_exists @word != nil
+json.correct_letters @word ? @guess.correct_letters : 0
+json.correct_placement @word ? @guess.correct_placement : 0

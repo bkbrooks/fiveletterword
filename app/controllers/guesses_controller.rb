@@ -4,6 +4,7 @@ class GuessesController < ApplicationController
   # POST /make_guesses
   def make_guess
     @guess = Guess.create(game: @game, text: guess_params[:text])
+    @word = Word.find_by(word: guess_params[:text])
 
     render :show, status: :created
   end
